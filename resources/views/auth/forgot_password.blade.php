@@ -2,58 +2,116 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
+    <meta charset="utf-8" />
+    <title>Forgot Password | co-55</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta content="A fully featured admin theme which can be used to build CRM, CMS, etc." name="description" />
+    <meta content="Coderthemes" name="author" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <!-- App favicon -->
+    <link rel="shortcut icon" href="{{ url('assets/images/favicon.ico') }}">
 
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
-        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous">
-    </script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.3/dist/umd/popper.min.js"
-        integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous">
-    </script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/js/bootstrap.min.js"
-        integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous">
-    </script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/css/bootstrap.min.css"
-        integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
-    <title>CO-55</title>
+    <!-- App css -->
+    <link href="{{ url('assets/css/bootstrap-modern.min.css') }}" rel="stylesheet" type="text/css"
+        id="bs-default-stylesheet" />
+    <link href="{{ url('assets/css/app-modern.min.css') }}" rel="stylesheet" type="text/css"
+        id="app-default-stylesheet" />
+
+    <link href="{{ url('assets/css/bootstrap-modern-dark.min.css') }}" rel="stylesheet" type="text/css"
+        id="bs-dark-stylesheet" disabled />
+    <link href="{{ url('assets/css/app-modern-dark.min.css') }}" rel="stylesheet" type="text/css"
+        id="app-dark-stylesheet" disabled />
+
+    <!-- icons -->
+    <link href="{{ url('assets/css/icons.min.css') }}" rel="stylesheet" type="text/css" />
+
 </head>
 
-<body>
-    <div class="row">
-        <div class="col-4"></div>
-        <div class="col-4">
+<body class="authentication-bg authentication-bg-pattern">
 
-            <div class="card text-center" style="width: 300px;margin-top: 25px;">
-                <div class="card-header h5 text-white bg-primary">Forgot Password</div>
-                <div class="card-body px-5">
-                    <p class="card-text py-2">
-                        Enter your email address and we'll send you an email with instructions to reset your password.
-                    </p>
-                    <form action="{{ route('auth.forgot-password') }}" method="POST">
-                        @csrf
+    <div class="account-pages mt-5 mb-5">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-md-8 col-lg-6 col-xl-5">
+                    <div class="card bg-pattern">
 
-                        <div class="form-outline">
-                            <label class="form-label" for="typeEmail">Email input</label>
-                            <input type="email" id="typeEmail" value="{{ old('email') }}" name="email"
-                                class="form-control my-3" />
-                            @error('email')
-                                <div class="alert alert-danger">{{ $message }}</div>
-                            @enderror
-                        </div>
-                        <button type="submit" class="btn btn-primary w-100">Reset password</button>
+                        <div class="card-body p-4">
 
-                        <div class="d-flex justify-content-between mt-4">
-                            <a class="" href="login">Login</a>
-                            <a class="" href="registration">Register</a>
-                        </div>
-                </div>
-                </form>
+                            <div class="text-center w-75 m-auto">
+                                <div class="auth-logo">
+                                    <a href="index.html" class="logo logo-dark text-center">
+                                        <span class="logo-lg">
+                                            <img src="{{ url('assets/images/logo-dark.png') }}" alt=""
+                                                height="22">
+                                        </span>
+                                    </a>
+
+                                    <a href="index.html" class="logo logo-light text-center">
+                                        <span class="logo-lg">
+                                            <img src="{{ url('assets/images/logo-light.png') }}" alt=""
+                                                height="22">
+                                        </span>
+                                    </a>
+                                </div>
+                                <p class="text-muted mb-4 mt-3">Enter your email address and we'll send you an email
+                                    with instructions to reset your password.</p>
+                            </div>
+
+                            <form action="{{ route('auth.forgot-password') }}" method="POST">
+                                @csrf
+
+                                <div class="form-group mb-3">
+                                    <label for="emailaddress">Email address</label>
+                                    <input class="form-control" type="email" name="email"
+                                        value="{{ old('email') }}" id="emailaddress" required=""
+                                        placeholder="Enter your email">
+                                    @error('email')
+                                        <div class="alert alert-danger">{{ $message }}</div>
+                                    @enderror
+
+                                </div>
+
+                                <div class="form-group mb-0 text-center">
+                                    <button class="btn btn-primary btn-block" type="submit"> Reset Password </button>
+                                </div>
+
+                            </form>
+
+                        </div> <!-- end card-body -->
+                    </div>
+                    <!-- end card -->
+
+                    <div class="row mt-3">
+                        <div class="col-12 text-center">
+                            <p class="text-white-50">Back to <a href="{{ route('auth.login') }}"
+                                    class="text-white ml-1"><b>Log
+                                        in</b></a></p>
+                        </div> <!-- end col -->
+                    </div>
+                    <!-- end row -->
+
+                </div> <!-- end col -->
             </div>
+            <!-- end row -->
         </div>
-        <div class="col-4"></div>
+        <!-- end container -->
     </div>
+    <!-- end page -->
+
+
+    <footer class="footer footer-alt text-white-50">
+        2015 -
+        <script>
+            document.write(new Date().getFullYear())
+        </script> &copy; UBold theme by <a href="" class="text-white-50">Coderthemes</a>
+    </footer>
+
+    <!-- Vendor js -->
+    <script src="{{ url('assets/js/vendor.min.js') }}"></script>
+
+    <!-- App js -->
+    <script src="{{ url('assets/js/app.min.js') }}"></script>
+
 </body>
 
 </html>

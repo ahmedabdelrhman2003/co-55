@@ -2,90 +2,177 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
+    <meta charset="utf-8" />
+    <title>Register & Signup | CO-55</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta content="A fully featured admin theme which can be used to build CRM, CMS, etc." name="description" />
+    <meta content="Coderthemes" name="author" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <!-- App favicon -->
+    <link rel="shortcut icon" href="{{ url('assets/images/favicon.ico') }}">
 
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
-        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous">
-    </script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.3/dist/umd/popper.min.js"
-        integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous">
-    </script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/js/bootstrap.min.js"
-        integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous">
-    </script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/css/bootstrap.min.css"
-        integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
-    <title>CO-55</title>
+    <!-- App css -->
+    <link href="{{ url('assets/css/bootstrap-modern.min.css') }}" rel="stylesheet" type="text/css"
+        id="bs-default-stylesheet" />
+    <link href="{{ url('assets/css/app-modern.min.css') }}" rel="stylesheet" type="text/css"
+        id="app-default-stylesheet" />
+
+    <link href="{{ url('assets/css/bootstrap-modern-dark.min.css') }}" rel="stylesheet" type="text/css"
+        id="bs-dark-stylesheet" disabled />
+    <link href="{{ url('assets/css/app-modern-dark.min.css') }}" rel="stylesheet" type="text/css"
+        id="app-dark-stylesheet" disabled />
+
+    <!-- icons -->
+    <link href="{{ url('assets/css/icons.min.css') }}" rel="stylesheet" type="text/css" />
+
 </head>
 
-<body>
-    <section class="vh-100 bg-image"
-        style="background-image: url('https://mdbcdn.b-cdn.net/img/Photos/new-templates/search-box/img4.webp');">
-        <div class="mask d-flex align-items-center h-100 gradient-custom-3">
-            <div class="container h-100">
-                <div class="row d-flex justify-content-center align-items-center h-100">
-                    <div class="col-12 col-md-9 col-lg-7 col-xl-6">
-                        <div class="card" style="border-radius: 15px;">
-                            <div class="card-body p-5">
-                                <h2 class="text-uppercase text-center mb-5">Create an account</h2>
+<body class="authentication-bg authentication-bg-pattern">
 
-                                <form action="{{ route('auth.register') }}" method="POST">
-                                    @csrf
-                                    @if (Session::has('success'))
-                                        <div class="alert alert-success">{{ Session::get('success') }}</div>
-                                    @endif
-                                    @if (Session::has('fiald'))
-                                        <div class="alert alert-danger">{{ Session::get('faild') }}</div>
-                                    @endif
-                                    <div class="form-outline mb-4">
-                                        <label class="form-label" for="form3Example1cg">Your Name</label>
-                                        <input type="text" id="form3Example1cg" value="{{ old('name') }}"
-                                            name="name" class="form-control form-control-lg" />
-                                        @error('name')
-                                            <div class="alert alert-danger">{{ $message }}</div>
-                                        @enderror
+    <div class="account-pages mt-5 mb-5">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-md-8 col-lg-6 col-xl-5">
+                    <div class="card bg-pattern">
 
-                                    </div>
+                        <div class="card-body p-4">
 
-                                    <div class="form-outline mb-4">
-                                        <label class="form-label" for="form3Example3cg">Your Email</label>
-                                        <input type="email" value="{{ old('email') }}" name="email"
-                                            id="form3Example3cg" class="form-control form-control-lg" />
-                                        @error('email')
-                                            <div class="alert alert-danger">{{ $message }}</div>
-                                        @enderror
-                                    </div>
+                            <div class="text-center w-75 m-auto">
+                                <div class="auth-logo">
+                                    <a href="index.html" class="logo logo-dark text-center">
+                                        <span class="logo-lg">
+                                            <img src="{{ url('assets/images/logo-dark.png') }}" alt=""
+                                                height="22">
+                                        </span>
+                                    </a>
 
-                                    <div class="form-outline mb-4">
-                                        <label class="form-label" for="form3Example4cg">Password</label>
-                                        <input type="password" name="password" value="{{ old('password') }}"
-                                            id="form3Example4cg" class="form-control form-control-lg" />
+                                    <a href="index.html" class="logo logo-light text-center">
+                                        <span class="logo-lg">
+                                            <img src="{{ url('assets/images/logo-light.png') }}" alt=""
+                                                height="22">
+                                        </span>
+                                    </a>
+                                </div>
+                                <p class="text-muted mb-4 mt-3">Don't have an account? Create your account, it takes
+                                    less than a minute</p>
+                            </div>
+
+                            <form action="{{ route('auth.register') }}" method="POST">
+                                @csrf
+                                @if (Session::has('success'))
+                                    <div class="alert alert-success">{{ Session::get('success') }}</div>
+                                @endif
+                                @if (Session::has('fiald'))
+                                    <div class="alert alert-danger">{{ Session::get('faild') }}</div>
+                                @endif
+
+                                <div class="form-group">
+                                    <label for="fullname">Full Name</label>
+                                    <input class="form-control" type="text" name="name"
+                                        value="{{ old('name') }}" id="fullname" placeholder="Enter your name"
+                                        required>
+                                    @error('name')
+                                        <div class="alert alert-danger">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                                <div class="form-group">
+                                    <label for="emailaddress">Email address</label>
+
+                                    <input class="form-control" type="email" name="email"
+                                        value="{{ old('email') }}" id="emailaddress" required
+                                        placeholder="Enter your email">
+                                    @error('email')
+                                        <div class="alert alert-danger">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                                <div class="form-group">
+                                    <label for="password">Password</label>
+                                    <div class="input-group input-group-merge">
+                                        <input type="password" id="password" class="form-control" name="password"
+                                            value="{{ old('password') }}" placeholder="Enter your password">
                                         @error('password')
                                             <div class="alert alert-danger">{{ $message }}</div>
                                         @enderror
+                                        <div class="input-group-append" data-password="false">
+                                            <div class="input-group-text">
+                                                <span class="password-eye font-12"></span>
+                                            </div>
+                                        </div>
                                     </div>
-
-
-
-                                    <div class="d-flex justify-content-center">
-                                        <button type="submit"
-                                            class="btn btn-success btn-block btn-lg gradient-custom-4 text-body">Register</button>
+                                </div>
+                                <div class="form-group">
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" id="checkbox-signup">
+                                        <label class="custom-control-label" for="checkbox-signup">I accept <a
+                                                href="javascript: void(0);" class="text-dark">Terms and
+                                                Conditions</a></label>
                                     </div>
+                                </div>
+                                <div class="form-group mb-0 text-center">
+                                    <button class="btn btn-success btn-block" type="submit"> Sign Up </button>
+                                </div>
 
-                                    <p class="text-center text-muted mt-5 mb-0">Have already an account? <a
-                                            href="login" class="fw-bold text-body"><u>Login here</u></a></p>
+                            </form>
 
-                                </form>
-
+                            <div class="text-center">
+                                <h5 class="mt-3 text-muted">Sign up using</h5>
+                                <ul class="social-list list-inline mt-3 mb-0">
+                                    <li class="list-inline-item">
+                                        <a href="javascript: void(0);"
+                                            class="social-list-item border-primary text-primary"><i
+                                                class="mdi mdi-facebook"></i></a>
+                                    </li>
+                                    <li class="list-inline-item">
+                                        <a href="javascript: void(0);"
+                                            class="social-list-item border-danger text-danger"><i
+                                                class="mdi mdi-google"></i></a>
+                                    </li>
+                                    <li class="list-inline-item">
+                                        <a href="javascript: void(0);"
+                                            class="social-list-item border-info text-info"><i
+                                                class="mdi mdi-twitter"></i></a>
+                                    </li>
+                                    <li class="list-inline-item">
+                                        <a href="javascript: void(0);"
+                                            class="social-list-item border-secondary text-secondary"><i
+                                                class="mdi mdi-github"></i></a>
+                                    </li>
+                                </ul>
                             </div>
-                        </div>
+
+                        </div> <!-- end card-body -->
                     </div>
-                </div>
+                    <!-- end card -->
+
+                    <div class="row mt-3">
+                        <div class="col-12 text-center">
+                            <p class="text-white-50">Already have account? <a href="{{ route('auth.login') }}"
+                                    class="text-white ml-1"><b>Sign In</b></a></p>
+                        </div> <!-- end col -->
+                    </div>
+                    <!-- end row -->
+
+                </div> <!-- end col -->
             </div>
+            <!-- end row -->
         </div>
-    </section>
+        <!-- end container -->
+    </div>
+    <!-- end page -->
+
+    <footer class="footer footer-alt text-white-50">
+        2015 -
+        <script>
+            document.write(new Date().getFullYear())
+        </script> &copy; UBold theme by <a href="" class="text-white-50">Coderthemes</a>
+    </footer>
+
+    <!-- Vendor js -->
+    <script src="{{ url('assets/js/vendor.min.js') }}"></script>
+
+    <!-- App js -->
+    <script src="{{ url('assets/js/app.min.js') }}"></script>
+
 </body>
 
 </html>

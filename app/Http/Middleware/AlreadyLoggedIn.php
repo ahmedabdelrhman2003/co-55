@@ -16,7 +16,7 @@ class AlreadyLoggedIn
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (Session::has('loginId')) {
+        if (!Session::has('loginId')) {
             return back();
         }
         return $next($request);

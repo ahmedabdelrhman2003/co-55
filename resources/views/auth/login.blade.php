@@ -2,90 +2,139 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
+    <meta charset="utf-8" />
+    <title>Log In | CO-55</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
-        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous">
-    </script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.3/dist/umd/popper.min.js"
-        integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous">
-    </script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/js/bootstrap.min.js"
-        integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous">
-    </script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/css/bootstrap.min.css"
-        integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
-    <title>CO-55</title>
+    <meta content="A fully featured admin theme which can be used to build CRM, CMS, etc." name="description" />
+    <meta content="Coderthemes" name="author" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <!-- App favicon -->
+    <link rel="shortcut icon" href="{{ url('assets/images/favicon.ico') }}">
+
+    <!-- App css -->
+    <link href="{{ url('assets/css/bootstrap-modern.min.css') }}" rel="stylesheet" type="text/css"
+        id="bs-default-stylesheet" />
+    <link href="{{ url('assets/css/app-modern.min.css') }}" rel="stylesheet" type="text/css"
+        id="app-default-stylesheet" />
+
+    <link href="{{ url('assets/css/bootstrap-modern-dark.min.css') }}" rel="stylesheet" type="text/css"
+        id="bs-dark-stylesheet" disabled />
+    <link href="{{ url('assets/css/app-modern-dark.min.css') }}" rel="stylesheet" type="text/css"
+        id="app-dark-stylesheet" disabled />
+
+    <!-- icons -->
+    <link href="{{ url('assets/css/icons.min.css') }}" rel="stylesheet" type="text/css" />
+
 </head>
 
-<body>
-    <section class="vh-100 gradient-custom">
-        <div class="container py-5 h-100">
-            <div class="row d-flex justify-content-center align-items-center h-100">
-                <div class="col-12 col-md-8 col-lg-6 col-xl-5">
-                    <div class="card bg-dark text-white" style="border-radius: 1rem;">
-                        <div class="card-body p-5 text-center">
+<body class="authentication-bg authentication-bg-pattern">
 
-                            <div class="mb-md-5 mt-md-4 pb-5">
-                                <form action="{{ route('auth.login-user') }}" method="POST">
-                                    @csrf
-                                    {{-- @if (Session::has('success'))
-                                        <div class="alert alert-success">{{ Session::get('success') }}</div>
-                                    @endif --}}
-                                    @if (Session::has('faild'))
-                                        <div class="alert alert-danger">{{ Session::get('faild') }}</div>
-                                    @endif
-                                    @if (Session::has('success'))
-                                        <div class="alert alert-success">{{ Session::get('success') }}</div>
-                                    @endif
-                                    @if (Session::has('error'))
-                                        <div class="alert alert-danger">{{ Session::get('error') }}</div>
-                                    @endif
-                                    <h2 class="fw-bold mb-2 text-uppercase">Login</h2>
-                                    <p class="text-white-50 mb-5">Please enter your login and password!</p>
+    <div class="account-pages mt-5 mb-5">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-md-8 col-lg-6 col-xl-5">
+                    <div class="card bg-pattern">
 
-                                    <div class="form-outline form-white mb-4">
-                                        <label class="form-label" for="typeEmailX">Email</label>
-                                        <input type="email" value="{{ old('email') }}" id="typeEmailX" name="email"
-                                            class="form-control form-control-lg" />
-                                        @error('email')
-                                            <div class="alert alert-danger">{{ $message }}</div>
-                                        @enderror
+                        <div class="card-body p-4">
 
-                                    </div>
+                            <div class="text-center w-75 m-auto">
+                                <div class="auth-logo">
+                                    <a href="{{ route('dashboard') }}" class="logo logo-dark text-center">
+                                        <span class="logo-lg">
+                                            <img src="{{ url('assets/images/logo (1).png') }}" alt=""
+                                                height="42">
+                                        </span>
+                                    </a>
 
-                                    <div class="form-outline form-white mb-4">
-                                        <label class="form-label" for="typePasswordX">Password</label>
-                                        <input type="password" name="password" value="{{ old('password') }}"
-                                            id="typePasswordX" class="form-control form-control-lg" />
-                                        @error('password')
-                                            <div class="alert alert-danger">{{ $message }}</div>
-                                        @enderror
-                                    </div>
-
-                                    <p class="small mb-5 pb-lg-2"><a class="text-white-50"
-                                            href="{{ route('auth.forgot') }}">Forgot
-                                            password?</a></p>
-
-                                    <button class="btn btn-outline-light btn-lg px-5" type="submit">Login</button>
-
-                                </form>
-
+                                    <a href="{{ route('dashboard') }}" class="logo logo-light text-center">
+                                        <span class="logo-lg">
+                                            <img src="{{ url('assets/images/logo-light.png') }}" alt=""
+                                                height="22">
+                                        </span>
+                                    </a>
+                                </div>
+                                <p class="text-muted mb-4 mt-3">Enter your email address and password to access admin
+                                    panel.</p>
                             </div>
 
-                            <div>
-                                <p class="mb-0">Don't have an account? <a href="registration"
-                                        class="text-white-50 fw-bold">Sign Up</a>
-                                </p>
-                            </div>
+                            <form action="{{ route('auth.login-user') }}" method="POST">
+                                @csrf
+                                @if (Session::has('faild'))
+                                    <div class="alert alert-danger">{{ Session::get('faild') }}</div>
+                                @endif
+                                @if (Session::has('success'))
+                                    <div class="alert alert-success">{{ Session::get('success') }}</div>
+                                @endif
+                                @if (Session::has('error'))
+                                    <div class="alert alert-danger">{{ Session::get('error') }}</div>
+                                @endif
+                                <div class="form-group mb-3">
 
-                        </div>
+                                    <label for="emailaddress">Email address</label>
+                                    <input class="form-control" type="email" id="emailaddress" name="email"
+                                        value="{{ old('email') }}" required="" placeholder="Enter your email">
+                                    @error('email')
+                                        <div class="alert alert-danger">{{ $message }}</div>
+                                    @enderror
+                                </div>
+
+                                <div class="form-group mb-3">
+                                    <label for="password">Password</label>
+                                    <div class="input-group input-group-merge">
+                                        <input type="password" id="password" name="password"
+                                            value="{{ old('password') }}" class="form-control"
+                                            placeholder="Enter your password">
+                                        <div class="input-group-append" data-password="false">
+                                            <div class="input-group-text">
+                                                <span class="password-eye font-12"></span>
+                                            </div>
+                                            @error('password')
+                                                <div class="alert alert-danger">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                </div>
+
+
+
+                                <div class="form-group mb-0 text-center">
+                                    <button class="btn btn-primary btn-block" type="submit"> Log In </button>
+                                </div>
+
+                            </form>
+
+
+
+                        </div> <!-- end card-body -->
                     </div>
-                </div>
+                    <!-- end card -->
+
+                    <div class="row mt-3">
+                        <div class="col-12 text-center">
+                            <p> <a href="{{ route('auth.forgot') }}" class="text-white-50 ml-1">Forgot your
+                                    password?</a></p>
+
+                        </div> <!-- end col -->
+                    </div>
+                    <!-- end row -->
+
+                </div> <!-- end col -->
             </div>
+            <!-- end row -->
         </div>
-    </section>
+        <!-- end container -->
+    </div>
+    <!-- end page -->
+
+
+
+
+    <!-- Vendor js -->
+    <script src="{{ url('assets/js/vendor.minjs') }}"></script>
+
+    <!-- App js -->
+    <script src="{{ url('assets/js/app.minjs') }}"></script>
+
 </body>
 
 </html>

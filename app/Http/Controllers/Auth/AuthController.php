@@ -20,9 +20,10 @@ class AuthController extends Controller
     //
     function login()
     {
-
-
-        return view('auth.login');
+        if (!Session::has('loginId')) {
+            return view('auth.login');
+        } else
+            return redirect()->route('dashboard');
     }
     function login_user(LoginRequest $request)
     {
@@ -40,10 +41,21 @@ class AuthController extends Controller
             return back()->with('faild', 'email is not vaild');
         }
     }
-    function registration()
+    function admins()
     {
-
-        return view('auth.register');
+        if (Session::has('loginId')) {
+            $user = User::where('id', Session::get('loginId'))->first();
+            $users = User::get();
+            return view('auth.admins', compact('user', 'users'));
+        } else
+            return redirect()->route('auth.login');
+    }
+    function create()
+    {
+        if (Session::has('loginId')) {
+            $user = User::where('id', Session::get('loginId'))->first();
+            return view('auth.create', compact('user'));
+        }
     }
     function register(RegisterRequest $request)
     {
@@ -54,9 +66,10 @@ class AuthController extends Controller
         $user->password = Hash::make($request->password);
         $data = $user->save();
         if ($data) {
-            return redirect()->route('auth.login')->with('seccess', 'you made successfull registration');
+            return redirect()->route('auth.admins')->with('seccess', 'user created');
+        } else {
+            return back()->with('faild', 'faild to create user');
         }
-        return back()->with('faild', 'registration faild');
     }
     function logout()
     {
@@ -66,5 +79,10 @@ class AuthController extends Controller
 
             return redirect()->route('auth.login');
         }
+    }
+    function destroy($id)
+    {
+        $user = User::where('id', $id)->delete();
+        return back();
     }
 }

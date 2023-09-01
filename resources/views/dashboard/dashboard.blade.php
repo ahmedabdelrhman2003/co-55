@@ -1,22 +1,28 @@
-<!DOCTYPE html>
-<html lang="en">
+@include('layout')
+<!-- Left Sidebar End -->
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
-</head>
+<!-- ============================================================== -->
+<!-- Start Page Content here -->
+<!-- ============================================================== -->
 
-<body>
-    <h1>welcome home
-        <p>{{ $user->name }}</p>
-        {{-- <p>{{ $user->email }}</p> --}}
-        <a href="{{ route('auth.logout') }}" class="btn btn-outline-danger">logout</a>
+<div class="content-page">
+    <div class="content">
 
-    </h1>
+        <!-- Start Content-->
+        <div class="container-flued">
+        </div>
+        <!-- Footer Start -->
+
+        <!-- end Footer -->
+
+    </div>
+
+    <!-- ============================================================== -->
+    <!-- End Page content -->
+    <!-- ============================================================== -->
 
 
-</body>
+</div>
+<!-- END wrapper -->
 
-</html>
+<!-- Right Sidebar -->
