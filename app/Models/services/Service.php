@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Service extends Model
 {
+    public $timestamps = true;
     protected $guard = [];
     use HasFactory;
     public function services_icons(): HasMany

@@ -4,13 +4,14 @@
 <head>
 
     <meta charset="utf-8" />
-    <title>Dashboard | co-55 - Admin Dashboard </title>
+
+    <title>@yield('title')</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta content="A fully featured admin theme which can be used to build CRM, CMS, etc." name="description" />
+    <meta content="co-55" name="description" />
     <meta content="Coderthemes" name="author" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <!-- App favicon -->
-    <link rel="shortcut icon" href="{{ url('assets/images/favicon.ico') }}">
+    <link rel="shortcut icon" href="{{ url('assets/images/icon.png') }}">
 
     <!-- Plugins css -->
     <link href="{{ url('assets/libs/flatpickr/flatpickr.min.css') }}" rel="stylesheet" type="text/css" />
@@ -28,7 +29,9 @@
         id="app-dark-stylesheet" disabled />
 
     <!-- icons -->
+
     <link href="{{ url('assets/css/icons.min.css') }}" rel="stylesheet" type="text/css" />
+    @yield('jslinks')
 
 </head>
 
@@ -40,173 +43,53 @@
 
         <!-- Topbar Start -->
         <div class="navbar-custom">
-            <div class="container-fluid">
-                <ul class="list-unstyled topnav-menu float-right mb-0">
+            <div class="container-fluid ">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
 
+                </ul>
+                <li class="dropdown d-none d-lg-inline-block">
 
+                </li>
+                <ul class=" list-unstyled topnav-menu float-right mb-0">
 
-                    <li class="dropdown d-inline-block d-lg-none">
-                        <a class="nav-link dropdown-toggle arrow-none waves-effect waves-light" data-toggle="dropdown"
-                            href="#" role="button" aria-haspopup="false" aria-expanded="false">
-                            <i class="fe-search noti-icon"></i>
-                        </a>
-                        <div class="dropdown-menu dropdown-lg dropdown-menu-right p-0">
-                            <form class="p-3">
-                                <input type="text" class="form-control" placeholder="Search ..."
-                                    aria-label="Recipient's username">
-                            </form>
-                        </div>
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page"
+                            href="{{ route('account') }}">{{ Auth::user()->name }} <i class="fe-user"></i></a>
+                    </li>
+                    @can('admins')
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="{{ route('auth.admins') }}">Admins <i
+                                    class="fe-settings"></i></a>
+                        </li>
+                    @endcan
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="{{ route('auth.logout') }}">Logout <i
+                                class="fe-log-out"></i></a>
                     </li>
 
-                    <li class="dropdown d-none d-lg-inline-block">
-                        <a class="nav-link dropdown-toggle arrow-none waves-effect waves-light" data-toggle="fullscreen"
-                            href="#">
-                            <i class="fe-maximize noti-icon"></i>
-                        </a>
-                    </li>
-                    <li class="dropdown notification-list topbar-dropdown">
-                        <a class="nav-link dropdown-toggle nav-user mr-0 waves-effect waves-light"
-                            data-toggle="dropdown" href="#" role="button" aria-haspopup="false"
-                            aria-expanded="false">
-                            <img src="{{ url('assets/images/users/user-6.jpg') }}" alt="user-image"
-                                class="rounded-circle">
-                            <span class="pro-user-name ml-1">
-                                {{ $user->name }}<i class="mdi mdi-chevron-down"></i>
-                            </span>
-                        </a>
-                        <div class="dropdown-menu dropdown-menu-right profile-dropdown ">
-                            <!-- item-->
-                            <div class="dropdown-header noti-title">
-                                <h6 class="text-overflow m-0">Welcome {{ $user->name }} !</h6>
-                            </div>
-
-                            <!-- item-->
-                            <a href="{{ route('account') }}" class="dropdown-item notify-item">
-                                <i class="fe-user"></i>
-                                <span>My Account</span>
-                            </a>
-
-                            <!-- item-->
-                            <a href="{{ route('auth.admins') }}" class="dropdown-item notify-item">
-                                <i class="fe-settings"></i>
-                                <span>Admins</span>
-                            </a>
-
-                            <!-- item-->
 
 
-                            <div class="dropdown-divider"></div>
 
-                            <!-- item-->
-                            <a href="{{ route('auth.logout') }}" class="dropdown-item notify-item">
-                                <i class="fe-log-out"></i>
-                                <span>Logout</span>
-                            </a>
 
-                        </div>
-                    </li>
-
-                    <li class="dropdown notification-list">
-                        <a href="javascript:void(0);" class="nav-link right-bar-toggle waves-effect waves-light">
-                            <i class="fe-settings noti-icon"></i>
-                        </a>
-                    </li>
 
                 </ul>
 
                 <!-- LOGO -->
                 <div class="logo-box">
-                    <a href="{{ route('dashboard') }}" class="logo logo-dark text-center">
-                        <span class="logo-sm">
-                            <img src="{{ url('assets/images/logo-sm.png') }}" alt="" height="22">
-                            <!-- <span class="logo-lg-text-light">UBold</span> -->
-                        </span>
-                        <span class="logo-lg">
-                            <img src="{{ url('assets/images/logo-dark.png') }}" alt="" height="20">
-                            <!-- <span class="logo-lg-text-light">U</span> -->
-                        </span>
-                    </a>
+
 
                     <a href="{{ route('dashboard') }}" class="logo logo-light text-center">
                         <span class="logo-sm">
-                            <img src="{{ url('assets/images/logo-sm.png') }}" alt="" height="22">
+
                         </span>
                         <span class="logo-lg">
-                            <img src="{{ url('assets/images/logo-light.png') }}" alt="" height="20">
+                            <img style="height: 3rem" src="{{ url('assets/images/logo (1).png') }}" alt=""
+                                height="20">
                         </span>
                     </a>
                 </div>
 
-                <ul class="list-unstyled topnav-menu topnav-menu-left m-0">
-                    <li>
-                        <button class="button-menu-mobile waves-effect waves-light">
-                            <i class="fe-menu"></i>
-                        </button>
-                    </li>
 
-                    <li>
-                        <!-- Mobile menu toggle (Horizontal Layout)-->
-                        <a class="navbar-toggle nav-link" data-toggle="collapse" data-target="#topnav-menu-content">
-                            <div class="lines">
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                            </div>
-                        </a>
-                        <!-- End mobile menu toggle-->
-                    </li>
-
-                    <li class="dropdown d-none d-xl-block">
-                        <a class="nav-link dropdown-toggle waves-effect waves-light" data-toggle="dropdown"
-                            href="#" role="button" aria-haspopup="false" aria-expanded="false">
-                            Create New
-                            <i class="mdi mdi-chevron-down"></i>
-                        </a>
-                        <div class="dropdown-menu">
-                            <!-- item-->
-                            <a href="javascript:void(0);" class="dropdown-item">
-                                <i class="fe-briefcase mr-1"></i>
-                                <span>New Projects</span>
-                            </a>
-
-                            <!-- item-->
-                            <a href="javascript:void(0);" class="dropdown-item">
-                                <i class="fe-user mr-1"></i>
-                                <span>Create Users</span>
-                            </a>
-
-                            <!-- item-->
-                            <a href="javascript:void(0);" class="dropdown-item">
-                                <i class="fe-bar-chart-line- mr-1"></i>
-                                <span>Revenue Report</span>
-                            </a>
-
-                            <!-- item-->
-                            <a href="javascript:void(0);" class="dropdown-item">
-                                <i class="fe-settings mr-1"></i>
-                                <span>Settings</span>
-                            </a>
-
-                            <div class="dropdown-divider"></div>
-
-                            <!-- item-->
-                            <a href="javascript:void(0);" class="dropdown-item">
-                                <i class="fe-headphones mr-1"></i>
-                                <span>Help & Support</span>
-                            </a>
-
-                        </div>
-                    </li>
-
-                    <li class="dropdown dropdown-mega d-none d-xl-block">
-                        <a class="nav-link dropdown-toggle waves-effect waves-light" data-toggle="dropdown"
-                            href="#" role="button" aria-haspopup="false" aria-expanded="false">
-                            Mega Menu
-                            <i class="mdi mdi-chevron-down"></i>
-                        </a>
-
-                    </li>
-                </ul>
                 <div class="clearfix"></div>
             </div>
         </div>
@@ -219,111 +102,139 @@
 
                 <!-- User box -->
                 <div class="user-box text-center">
-                    <img src="{{ url('assets/images/users/user-6.jpg') }}" alt="user-img" title="Mat Helme"
-                        class="rounded-circle avatar-md">
-                    <div class="dropdown">
-                        <a href="{{ route('account') }}"
-                            class="text-dark font-weight-normal dropdown-toggle h5 mt-2 mb-1 d-block"
-                            data-toggle="dropdown">{{ $user->name }}</a>
-                        <div class="dropdown-menu user-pro-dropdown">
-
-                            <!-- item-->
-                            <a href="javascript:void(0);" class="dropdown-item notify-item">
-                                <i class="fe-user mr-1"></i>
-                                <span>My Account</span>
-                            </a>
-
-                            <!-- item-->
-                            <a href="javascript:void(0);" class="dropdown-item notify-item">
-                                <i class="fe-settings mr-1"></i>
-                                <span>Settings</span>
-                            </a>
-
-                            <!-- item-->
 
 
-                            <!-- item-->
-                            <a href="javascript:void(0);" class="dropdown-item notify-item">
-                                <i class="fe-log-out mr-1"></i>
-                                <span>Logout</span>
-                            </a>
+                    <a href="{{ route('account') }}"
+                        class="text-dark font-weight-normal  h5 mt-2 mb-1 d-block">{{ Auth::user()->name }}</a>
 
-                        </div>
-                    </div>
                     <p class="text-muted">Admin Head</p>
                 </div>
 
                 <!--- Sidemenu -->
                 <div id="sidebar-menu">
-
                     <ul id="side-menu">
 
-                        <li class="menu-title">Sections</li>
 
 
+                        <li>
+                            <a href="{{ route('dashboard') }}">
+                                <i data-feather="calendar"></i>
+                                <span> Dashboard </span>
+                            </a>
+                        </li>
 
                         <li class="menu-title mt-2">Apps</li>
+                        @can('services')
+                            <li>
+                                <a href="{{ route('services.index') }}">
+                                    <i data-feather="calendar"></i>
+                                    <span> Services </span>
+                                </a>
+                            </li>
+                        @endcan
+                        @can('locations')
+                            <li>
+                                <a href="{{ route('locations.index') }}">
+                                    <i data-feather="calendar"></i>
+                                    <span> Location </span>
+                                </a>
+                            </li>
+                        @endcan
+                        @can('faqs')
+                            <li>
+                                <a href="{{ route('faqs.index') }}">
+                                    <i data-feather="calendar"></i>
+                                    <span> Faqs </span>
+                                </a>
+                            </li>
+                        @endcan
 
-                        <li>
-                            <a href="{{ route('services.index') }}">
-                                <i data-feather="calendar"></i>
-                                <span> Services </span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="{{ route('locations.index') }}">
-                                <i data-feather="calendar"></i>
-                                <span> Location </span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="{{ route('faqs.index') }}">
-                                <i data-feather="calendar"></i>
-                                <span> Faqs </span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="{{ route('amenities.index') }}">
-                                <i data-feather="calendar"></i>
-                                <span> Amenities </span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="{{ route('abouts.index') }}">
-                                <i data-feather="calendar"></i>
-                                <span> About Us </span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="{{ route('privacy.index') }}">
-                                <i data-feather="calendar"></i>
-                                <span> Privacy </span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="{{ route('home.index') }}">
-                                <i data-feather="calendar"></i>
-                                <span> Home </span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="{{ route('why.index') }}">
-                                <i data-feather="calendar"></i>
-                                <span> Why </span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="{{ route('terms.index') }}">
-                                <i data-feather="calendar"></i>
-                                <span> terms </span>
-                            </a>
-                        </li>
+                        @can('testimonials')
+                            <li>
+                                <a href="{{ route('testimonials.index') }}">
+                                    <i data-feather="calendar"></i>
+                                    <span>Testimonials </span>
+                                </a>
+                            </li>
+                        @endcan
+                        @can('abouts')
+                            <li>
+                                <a href="{{ route('abouts.index') }}">
+                                    <i data-feather="calendar"></i>
+                                    <span> About Us </span>
+                                </a>
+                            </li>
+                        @endcan
+                        @can('privacy')
+                            <li>
+                                <a href="{{ route('privacy.index') }}">
+                                    <i data-feather="calendar"></i>
+                                    <span> Privacy </span>
+                                </a>
+                            </li>
+                        @endcan
+                        @can('home')
+                            <li>
+                                <a href="{{ route('home.index') }}">
+                                    <i data-feather="calendar"></i>
+                                    <span> Home </span>
+                                </a>
+                            </li>
+                        @endcan
+                        @can('why')
+                            <li>
+                                <a href="{{ route('why.index') }}">
+                                    <i data-feather="calendar"></i>
+                                    <span> Why </span>
+                                </a>
+                            </li>
+                        @endcan
+                        @can('terms')
+                            <li>
+                                <a href="{{ route('terms.index') }}">
+                                    <i data-feather="calendar"></i>
+                                    <span> terms </span>
+                                </a>
+                            </li>
+                        @endcan
+                        @can('jobs')
+                            <li>
+                                <a href="{{ route('jobs.index') }}">
+                                    <i data-feather="calendar"></i>
+                                    <span> Job </span>
+                                </a>
+                            </li>
+                        @endcan
+                        @can('inquiry')
+                            <li>
+                                <a href="{{ route('inquiry.index') }}">
+                                    <i data-feather="calendar"></i>
+                                    <span> Inquiry </span>
+                                </a>
+                            </li>
+                        @endcan
+                        @can('contact')
+                            <li>
+                                <a href="{{ route('contact.index') }}">
+                                    <i data-feather="calendar"></i>
+                                    <span> contact </span>
+                                </a>
+                            </li>
+                        @endcan
+                        @can('amenities')
+                            <li>
+                                <a href="{{ route('amenities.index') }}">
+                                    <i data-feather="calendar"></i>
+                                    <span> amenities </span>
+                                </a>
+                            </li>
+                        @endcan
 
 
                 </div>
                 <!-- End Sidebar -->
 
-                <div class="clearfix"></div>
+
 
             </div>
             <!-- Sidebar -left -->
@@ -339,7 +250,7 @@
 
                     <li class="nav-item">
                         <a class="nav-link py-2 active" data-toggle="tab" href="#settings-tab" role="tab">
-                            <i class="mdi mdi-cog-outline d-block font-22 my-1"></i>
+                            <i class="mdi mdi-24px mdi-cog-outline d-block font-22 my-1"></i>
                         </a>
                     </li>
                 </ul>
@@ -490,9 +401,13 @@
         @yield('content')
         <!-- Right bar overlay-->
         <div class="rightbar-overlay"></div>
-
         <!-- Vendor js -->
         <script src="{{ url('assets/js/vendor.min.js') }}"></script>
+        <script>
+            let ChangeIcon = function(icon) {
+                icon.classList.toggle('mdi-close-thick')
+            }
+        </script>
 
         <script>
             function deleteConfirmation(id) {
@@ -528,7 +443,7 @@
         </script>
         <!-- Plugins js-->
         <script src="{{ url('assets/libs/flatpickr/flatpickr.min.js') }}"></script>
-        <script src="{{ url('assets/libs/apexcharts/apexcharts.min.js') }}"></script>
+
 
         <script src="{{ url('assets/libs/selectize/js/standalone/selectize.min.js') }}"></script>
 
@@ -537,25 +452,36 @@
 
         <!-- App js-->
         <script src="{{ url('assets/js/app.min.js') }}"></script>
-        <script src="{{ url('assests/js/vendor.min.js') }}"></script>
+        <script src="{{ url('assets/js/vendor.min.js') }}"></script>
 
         <!-- Summernote js -->
-        <script src="{{ url('assests/libs/summernote/summernote-bs4.min.js') }}"></script>
+        <script src="{{ url('assets/libs/summernote/summernote-bs4.min.js') }}"></script>
         <!-- Select2 js-->
-        <script src="{{ url('assests/libs/select2/js/select2.min.js') }}"></script>
+        <script src="{{ url('assets/libs/select2/js/select2.min.js') }}"></script>
         <!-- Dropzone file uploads-->
-        <script src="{{ url('assests/libs/dropzone/min/dropzone.min.js') }}"></script>
+        <script src="{{ url('assets/libs/dropzone/min/dropzone.min.js') }}"></script>
 
         <!-- Init js-->
-        <script src="{{ url('assests/js/pages/form-fileuploads.init.js') }}"></script>
+        <script src="{{ url('assets/js/pages/form-fileuploads.init.js') }}"></script>
 
         <!-- Init js -->
-        <script src="{{ url('assests/js/pages/add-product.init.js') }}"></script>
+        <script src="{{ url('assets/js/pages/add-product.init.js') }}"></script>
 
         <!-- App js -->
-        <script src="{{ url('assests/js/app.min.js') }}"></script>
+        <script src="{{ url('assets/js/app.min.js') }}"></script>
 
 
+        <script>
+            jQuery(document).ready(function() {
+                $('.summernote').summernote({
+                    height: 230, // set editor height
+                    minHeight: null, // set minimum height of editor
+                    maxHeight: null, // set maximum height of editor
+                    focus: false // set focus to editable area after initializing summernote
+                });
+            });
+        </script>
+        @yield('jsscript')
 </body>
 
 </html>

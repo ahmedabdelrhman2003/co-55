@@ -1,4 +1,6 @@
 @include('layout')
+@section('title', 'account | co-55 - Admin Dashboard ')
+
 <div class="content-page">
     <div class="content">
         <div class="container-fluid">
@@ -20,7 +22,7 @@
 
                                             <th>name</th>
                                             <th>email</th>
-
+                                            <th>role</th>
 
 
                                         </tr>
@@ -28,8 +30,9 @@
                                     <tbody>
 
                                         <tr>
-                                            <td>{{ $user->name }}</td>
-                                            <td>{{ $user->email }}</td>
+                                            <td>{{ Auth::user()->name }}</td>
+                                            <td>{{ Auth::user()->email }}</td>
+                                            <td>{{ $user->role->name }}</td>
 
                                         </tr>
 

@@ -2,9 +2,7 @@
 
 namespace App\Http\Controllers\dashboard;
 
-use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\DB;
-use App\Models\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
@@ -15,14 +13,8 @@ class AboutController extends Controller
      */
     public function index()
     {
-
-
-
-        $abouts = DB::table('abouts')->select()->get();
-
-
-        $user = User::where('id', Session::get('loginId'))->first();
-        return view('dashboard.abouts.index', compact('abouts', 'user'));
+        $abouts = DB::table('abouts')->select()->paginate(10);
+        return view('dashboard.abouts.index', compact('abouts'));
     }
 
     /**
@@ -31,27 +23,27 @@ class AboutController extends Controller
     public function create()
     {
 
+        return view('dashboard.abouts.create');
+    }
+    function filter(Request $request)
+    {
+        $request->validate([
+            'start_date' => ['required', 'date'],
+            'end_date' => ['required', 'date'],
 
+        ]);
+        $start_date = $request->start_date;
+        $end_date = $request->end_date;
 
-        $user = User::where('id', Session::get('loginId'))->first();
-        return view('dashboard.abouts.create', compact('user'));
+        $abouts = DB::table('abouts')->select()->whereDate('created_at', '>=', $start_date)->whereDate('created_at', '<=', $end_date)->paginate(10);
+
+        return view('dashboard.abouts.index', compact('abouts'));
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
-    {
-        $request->validate([
-            'title' => ['required'],
-            'description' => ['required']
-        ]);
-        $abouts = DB::table('abouts')->insert([
-            'title' => $request->title,
-            'description' => $request->description
-        ]);
-        return redirect()->route('abouts.index')->with('seccess', 'stored seccessfully');
-    }
+
 
     /**
      * Display the specified resource.
@@ -60,9 +52,9 @@ class AboutController extends Controller
     {
 
         $abouts = DB::table('abouts')->select()->where('id', $id)->first();
-        $user = User::where('id', Session::get('loginId'))->first();
 
-        return view('dashboard.abouts.view', compact('abouts', 'user'));
+
+        return view('dashboard.abouts.view', compact('abouts'));
     }
 
     /**
@@ -71,9 +63,9 @@ class AboutController extends Controller
     public function edit($id)
     {
         $abouts = DB::table('abouts')->select()->where('id', $id)->first();
-        $user = User::where('id', Session::get('loginId'))->first();
 
-        return view('dashboard.abouts.edit', compact('abouts', 'user'));
+
+        return view('dashboard.abouts.edit', compact('abouts'));
     }
 
     /**
@@ -82,24 +74,19 @@ class AboutController extends Controller
     public function update(Request $request,  $id)
     {
         $request->validate([
-            'title' => ['required'],
-            'description' => ['required', 'min:5'],
+
+            'description' => ['required', 'min:5', 'max:255'],
 
         ]);
         DB::table('abouts')->where('id', $id)->update([
-            'title' => $request->title,
+
             'description' => $request->description,
 
         ]);
-        return redirect()->route('abouts.index')->with('seccess', 'updated seccessfully');
+        return redirect()->route('abouts.index')->with('success', 'updated successfully');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy($id)
-    {
-        DB::table('abouts')->where('id', $id)->delete();
-        return redirect()->route('abouts.index')->with('seccess', 'deleted seccessfully');
-    }
 }

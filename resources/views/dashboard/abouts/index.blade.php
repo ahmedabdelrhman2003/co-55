@@ -1,99 +1,108 @@
-@include('layout')
-<!-- Start Content-->
-<div class="content-page">
-    <div class="content">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-12">
-                    <div class="card">
-                        <div class="card-body">
-                            <div class="row mb-2">
-                                <div class="col-md-6">
-                                    <h4>about us</h4>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="text-md-right">
-                                        <button type="button"
-                                            class="btn btn-danger waves-effect waves-light mb-2 mr-2">
-                                            <a style="color: white;" href="{{ route('abouts.create') }}"><i
-                                                    class="mdi mdi-basket mr-1"></i> add
-                                                section</a></button>
+@extends('layout')
+@section('title', 'abouts table | co-55 - Admin Dashboard ')
+@section('content')
+    <!-- Start Content-->
+    <div class="content-page">
+        <div class="content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="page-title-box">
+                            <div class="page-title-right">
+                                <ol class="breadcrumb m-0">
+                                    <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard</a></li>
+                                    <li class="breadcrumb-item active">Abouts</li>
+                                </ol>
+                            </div>
+                            <h4 class="page-title">Edit Abouts</h4>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" style="margin-bottom: 1rem;">
+                    <div class="col-5">
+                        <form action="{{ route('abouts.filter') }}" method="get">
+                            @csrf
+                            <label for="example-date">Date From</label>
+                            <input class="form-control" id="example-date" type="date" name="start_date">
+                            @error('start_date')
+                                <div class="alert alert-danger">{{ $message }}</div>
+                            @enderror
+                    </div>
+                    <div class="col-6">
+                        <div class="row">
+                            <div class="col-10"> <label for="example-date">Date To</label>
+                                <input class="form-control" id="example-date" type="date" name="end_date">
+                                @error('end_date')
+                                    <div class="alert alert-danger">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <button
+                                style="height: 2rem;
+                            padding-bottom: 1.5rem;
+                            margin-top: 1.9rem;"
+                                type="submit" class="btn btn-blue waves-effect waves-light">filter</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        @if (session('success'))
+                            <div class="alert alert-success">
+                                {{ session('success') }}
+                            </div>
+                        @endif
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="row mb-2">
+                                    <div class="col-md-6">
+                                        <h4>about us</h4>
                                     </div>
-                                </div><!-- end col-->
-                            </div>
-
-                            <div class="table-responsive">
-                                <table class="table table-centered table-nowrap table-borderless table-hover mb-0">
-                                    <thead class="thead-light">
-                                        <tr>
-
-                                            <th>title</th>
-                                            <th>activation</th>
-                                            <th style="width: 82px;">Action</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-
-                                        @foreach ($abouts as $about)
+                                </div>
+                                <div class="table-responsive">
+                                    <table class="table table-centered table-nowrap table-borderless table-hover mb-0">
+                                        <thead class="thead-light">
                                             <tr>
-                                                <td>
-                                                    {{ $about->title }}
-                                                </td>
-                                                <td>
+                                                <th>title</th>
 
-                                                    <a href=""><i class=" mdi mdi-check-circle"
-                                                            class="icon-dual"></i></a>
-                                                    <a href=""><i class=" mdi mdi-minus-circle"
-                                                            class="icon-dual"></i></a>
-                                                </td>
-                                                <td>
-                                                    <a href="{{ route('abouts.view', $about->id) }}"><i
-                                                            class=" mdi mdi-eye" class="icon-dual"></i></a>
-
-                                                    <a href="{{ route('abouts.edit', $about->id) }}"
-                                                        class="action-icon">
-                                                        <i class="mdi mdi-square-edit-outline"></i>
-                                                    </a>
-                                                    <a href="{{ route('abouts.destroy', $about->id) }}"
-                                                        class="action-icon"
-                                                        onclick="return confirm('Are you sure you want to delete this?')">
-                                                        <i class="mdi mdi-delete"></i></a>
-                                                </td>
+                                                <th style="width: 82px;">Action</th>
                                             </tr>
-                                        @endforeach
+                                        </thead>
+                                        <tbody>
+                                            @foreach ($abouts as $about)
+                                                <tr>
+                                                    <td>
+                                                        {{ $about->title }}
+                                                    </td>
 
-                                    </tbody>
-                                </table>
-                            </div>
+                                                    <td>
+                                                        @can('view-abouts')
+                                                            <a href="{{ route('abouts.view', $about->id) }}"><i
+                                                                    class="mdi-24px mdi mdi-eye-outline
+                                                                    "
+                                                                    class="icon-dual"></i></a>
+                                                        @endcan
+                                                        @can('edit-abouts')
+                                                            <a href="{{ route('abouts.edit', $about->id) }}"
+                                                                class="action-icon">
+                                                                <i class="mdi-24px mdi mdi-square-edit-outline"></i>
+                                                            </a>
+                                                        @endcan
 
-                            <ul class="pagination pagination-rounded justify-content-end my-2">
-                                <li class="page-item">
-                                    <a class="page-link" href="javascript: void(0);" aria-label="Previous">
-                                        <span aria-hidden="true">«</span>
-                                        <span class="sr-only">Previous</span>
-                                    </a>
-                                </li>
-                                <li class="page-item active"><a class="page-link" href="javascript: void(0);">1</a></li>
-                                <li class="page-item"><a class="page-link" href="javascript: void(0);">2</a>
-                                </li>
-                                <li class="page-item"><a class="page-link" href="javascript: void(0);">3</a>
-                                </li>
-                                <li class="page-item"><a class="page-link" href="javascript: void(0);">4</a>
-                                </li>
-                                <li class="page-item"><a class="page-link" href="javascript: void(0);">5</a>
-                                </li>
-                                <li class="page-item">
-                                    <a class="page-link" href="javascript: void(0);" aria-label="Next">
-                                        <span aria-hidden="true">»</span>
-                                        <span class="sr-only">Next</span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </div> <!-- end card-body-->
-                    </div> <!-- end card-->
-                </div> <!-- end col -->
+                                                    </td>
+                                                </tr>
+                                            @endforeach
 
+                                        </tbody>
+                                    </table>
+                                    <div class="div">{{ $abouts->links('pagination::bootstrap-5') }}</div>
+                                </div>
+                            </div> <!-- end card-body-->
+                        </div> <!-- end card-->
+                    </div> <!-- end col -->
+                </div>
             </div>
         </div>
     </div>
-</div>
+@endsection

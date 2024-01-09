@@ -3,14 +3,9 @@
 
 namespace App\Http\Controllers\dashboard;
 
-use Illuminate\Http\UploadedFile;
-
-use Illuminate\Http\File;
-use Illuminate\Support\Facades\DB;
 use App\Models\User;
 use App\Http\traits\media;
 use Illuminate\Support\Facades\Session;
-
 use App\Http\Controllers\Controller;
 use App\Models\services\Service;
 use App\Models\services\ServicesIcon;
@@ -24,13 +19,21 @@ class ServicesController extends Controller
      */
     public function index()
     {
-        // if (Session::has('loginId')) {
-        $services = Service::all();
+        $services = Service::paginate(10);
 
+        return view('dashboard.services.index', compact('services'));
+    }
+    function filter(Request $request)
+    {
+        $request->validate([
+            'start_date' => ['required', 'date'],
+            'end_date' => ['required', 'date'],
+        ]);
+        $start_date = $request->start_date;
+        $end_date = $request->end_date;
+        $services = service::whereDate('created_at', '>=', $start_date)->whereDate('created_at', '<=', $end_date)->paginate(10);
 
-        $user = User::where('id', Session::get('loginId'))->first();
-        return view('dashboard.services.index', compact('services', 'user'));
-        // }
+        return view('dashboard.services.index', compact('services'));
     }
 
     /**
@@ -38,10 +41,8 @@ class ServicesController extends Controller
      */
     public function create()
     {
-        // if (Session::has('loginId')) {
-
-
         $user = User::where('id', Session::get('loginId'))->first();
+
         return view('dashboard.services.create', compact('user'));
         // }
     }
@@ -51,16 +52,16 @@ class ServicesController extends Controller
      */
     public function store(Request $request)
     {
-        // dd($request);
         $request->validate([
-            'name' => ['required'],
-            'description' => ['required',  'min:10'],
-            'icon_title' => ['required'],
-            'image' => ['image', 'required', 'mimes:jpeg,jpg,png,svg', 'max:1000'],
-            'icon_name' => ['required'],
-            'icon_image' => ['required', 'min:3', 'array'],
+            'name' => ['required', 'max:225'],
+            'description' => ['required',  'min:10', 'max:225'],
+            'icon_title' => ['required', 'array', 'min:0'],
+            'icon_title.*' => ['max:255'],
+            'image' => ['image', 'required', 'mimes:jpeg,jpg,png,svg'],
+            'icon_image.*' => ['mimes:jpeg,jpg,png,svg'],
+            'icon_image' => ['array', 'required', 'min:0'],
+            // 'icon_image.*' => ['mimes:jpeg,jpg,png,svg'],
         ]);
-
         $data = $request->except('icon_name', 'image', 'icon_image', 'token');
         $photoName = $this->uploadPhoto($request->image, 'services');
         $data['image'] = $photoName;
@@ -69,33 +70,27 @@ class ServicesController extends Controller
         $service->image = $data['image'];
         $service->description = $request->description;
         $service->save();
-        $icon_names = $request->icon_name;
         $icon_images = $request->icon_image;
         $icon_title = $request->icon_title;
-        foreach ($icon_names as $index => $icon_name) {
+        foreach ($icon_images as $index => $icon_name) {
             $nameAttribute = new ServicesIcon();
-            $nameAttribute->name = $icon_names[$index];
             $nameAttribute->title = $icon_title[$index];
             $nameAttribute->image =  $this->uploadPhoto($icon_images[$index], 'services/icons');
             $nameAttribute->services_id = $service->id;
             $nameAttribute->save();
         }
-        return redirect()->route('dashboard');
-    }
 
+        return redirect()->route('services.index')->with('success', 'stored successfully');
+    }
     /**
      * Display the specified resource.
      */
     public function show($id)
     {
-        if (Session::has('loginId')) {
-            $service = Service::where('id', $id)->first();
-            // $service = Service::find($id)->with('services_icons')->get();
-            // dd($service);
-            $icons = ServicesIcon::where('services_id', $id)->get();
-            $user = User::where('id', Session::get('loginId'))->first();
-            return view('dashboard.services.view', compact('service', 'user', 'icons'));
-        }
+        $service = Service::where('id', $id)->first();
+        $icons = ServicesIcon::where('services_id', $id)->get();
+
+        return view('dashboard.services.view', compact('service', 'icons'));
     }
 
     /**
@@ -103,14 +98,10 @@ class ServicesController extends Controller
      */
     public function edit($id)
     {
-        if (Session::has('loginId')) {
-            $service = Service::where('id', $id)->first();
-            // $service = Service::find($id)->with('services_icons')->get();
-            // dd($service);
-            $icons = ServicesIcon::where('services_id', $id)->get();
-            $user = User::where('id', Session::get('loginId'))->first();
-            return view('dashboard.services.edit', compact('service', 'icons', 'user'));
-        }
+        $service = Service::where('id', $id)->first();
+        $icons = ServicesIcon::where('services_id', $id)->get();
+
+        return view('dashboard.services.edit', compact('service', 'icons'));
     }
 
     /**
@@ -118,17 +109,12 @@ class ServicesController extends Controller
      */
     public function update(Request $request,  $id)
     {
-        // Request()->file('image')->store('public/assets/img');
-        // $this->uploadPhoto($request->image, '');
-
-        // dd($request->image);
         $request->validate([
             'name' => ['required'],
             'description' => ['required', 'min:10'],
-            'icon_title' => ['required'],
-            'image' => ['image', 'required', 'mimes:jpj,png,jpeg,svg', 'max:1000'],
-            'icon_name' => ['required'],
+            'icon_title' => ['required', 'array'],
 
+            'image' => ['image', 'mimes:jpj,png,jpeg,svg', 'max:1000'],
         ]);
         $service =  Service::find($id);
         $data = $request->except('icon_name', 'image', 'icon_image', 'token');
@@ -140,20 +126,14 @@ class ServicesController extends Controller
             $data['image'] = $photoName;
             $service->image = $data['image'];
         }
-
-
         $service->name = $request->name;
-
         $service->description = $request->description;
         $service->save();
         $icons = $service->services_icons;
-
         $icon_images = $request->icon_image;
 
-        $i = 0;
         foreach ($icons as $index => $icon) {
             if ($request->hasFile('icon_image')) {
-
                 $images = Request()->file('icon_image');
                 $photoDel = $icon->image;
                 $del = public_path('assets/img/services/icons' . $photoDel);
@@ -161,13 +141,23 @@ class ServicesController extends Controller
                 $icon_images = $request->icon_image;
                 $icon->image = $this->uploadPhoto($images[$index], 'icons');
             }
-
-            $icon->name = $request->icon_name[$i];
             $icon->title = $request->icon_title[$index];
             $icon->save();
-            $i = $i++;
         }
-        return redirect()->route('services.index')->with('seccess', 'edited seccessfully');
+
+        if ($request->has('icon_title2', 'icon_image2')) {
+            $icon_images2 = $request->icon_image2;
+            $icon_title2 = $request->icon_title2;
+            foreach ($icon_images2 as $index => $icon_name) {
+                $nameAttribute = new ServicesIcon();
+                $nameAttribute->title = $icon_title2[$index];
+                $nameAttribute->image =  $this->uploadPhoto($icon_images2[$index], 'services/icons');
+                $nameAttribute->services_id = $service->id;
+                $nameAttribute->save();
+            }
+        }
+
+        return redirect()->route('services.index')->with('success', 'edited successfully');
     }
 
     /**
@@ -187,6 +177,7 @@ class ServicesController extends Controller
             $icon->delete();
         }
         $service->delete();
-        return redirect()->route('services.index')->with('seccess', 'deelted seccessfully');
+
+        return redirect()->route('services.index')->with('success', 'deleted successfully');
     }
 }

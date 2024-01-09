@@ -17,38 +17,16 @@ class PrivacyController extends Controller
      */
     public function index()
     {
-
         $privacy = DB::table('privacy')->select()->get();
-        $user = User::where('id', Session::get('loginId'))->first();
-        return view('dashboard.privacy.index', compact('privacy', 'user'));
+
+        return view('dashboard.privacy.index', compact('privacy'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
     public function show($id)
     {
-
         $privacy = DB::table('privacy')->select()->where('id', $id)->first();
-        $user = User::where('id', Session::get('loginId'))->first();
 
-        return view('dashboard.privacy.view', compact('privacy', 'user'));
+        return view('dashboard.privacy.view', compact('privacy'));
     }
 
     /**
@@ -56,11 +34,9 @@ class PrivacyController extends Controller
      */
     public function edit($id)
     {
-
         $privacy = DB::table('privacy')->select()->where('id', $id)->first();
-        $user = User::where('id', Session::get('loginId'))->first();
 
-        return view('dashboard.privacy.edit', compact('privacy', 'user'));
+        return view('dashboard.privacy.edit', compact('privacy'));
     }
 
     /**
@@ -69,20 +45,13 @@ class PrivacyController extends Controller
     public function update(Request $request,  $id)
     {
         $request->validate([
-            'article' => ['required', 'min:100']
+            'article' => ['required', 'min:1', 'max:225']
         ]);
         DB::table('privacy')->where('id', $id)->update([
             'article' => $request->article,
-
+            'updated_at' => DB::raw('CURRENT_TIMESTAMP'),
         ]);
-        return redirect()->route('privavy.index')->with('seccess', 'updated seccessfully');
-    }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+        return redirect()->route('privavy.index')->with('success', 'updated successfully');
     }
 }

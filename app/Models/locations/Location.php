@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Model;
 class Location extends Model
 {
     use HasFactory;
+    public $timestamps = true;
     protected $guarded = [];
     public function locations_icons(): HasMany
     {

@@ -2,10 +2,12 @@
 
 namespace App\Http\Middleware;
 
+use Illuminate\Support\Facades\Auth;
+
 use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Illuminate\Support\Facades\Session;
+
 
 class AlreadyLoggedIn
 {
@@ -16,7 +18,7 @@ class AlreadyLoggedIn
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (!Session::has('loginId')) {
+        if (!Auth::check()) {
             return back();
         }
         return $next($request);

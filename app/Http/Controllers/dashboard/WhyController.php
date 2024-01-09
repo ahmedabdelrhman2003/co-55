@@ -3,12 +3,7 @@
 namespace App\Http\Controllers\dashboard;
 
 use App\Http\traits\media;
-
 use Illuminate\Support\Facades\DB;
-use App\Models\User;
-
-use Illuminate\Support\Facades\Session;
-
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
@@ -20,11 +15,21 @@ class WhyController extends Controller
      */
     public function index()
     {
-        $why = DB::table('why')->select()->get();
+        $why = DB::table('why')->select()->paginate(10);
 
+        return view('dashboard.why.index', compact('why'));
+    }
+    function filter(Request $request)
+    {
+        $request->validate([
+            'start_date' => ['required', 'date'],
+            'end_date' => ['required', 'date'],
+        ]);
+        $start_date = $request->start_date;
+        $end_date = $request->end_date;
+        $why = DB::table('why')->select()->whereDate('created_at', '>=', $start_date)->whereDate('created_at', '<=', $end_date)->paginate(10);
 
-        $user = User::where('id', Session::get('loginId'))->first();
-        return view('dashboard.why.index', compact('why', 'user'));
+        return view('dashboard.why.index', compact('why'));
     }
 
     /**
@@ -32,8 +37,8 @@ class WhyController extends Controller
      */
     public function create()
     {
-        $user = User::where('id', Session::get('loginId'))->first();
-        return view('dashboard.why.create', compact('user'));
+
+        return view('dashboard.why.create');
     }
 
     /**
@@ -42,21 +47,19 @@ class WhyController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => ['required'],
+            'name' => ['required', 'max:225'],
             'description' => ['required', 'min:5'],
-            'image' => ['required']
-
+            'image' => ['required', 'mimes:png,jpg,jpeg']
         ]);
         $photoName = $this->uploadPhoto($request->image, 'why');
-
         DB::table('why')->insert([
             'name' => $request->name,
             'description' => $request->description,
             'image' => $photoName,
-
-
+            'created_at' => DB::raw('CURRENT_TIMESTAMP'),
         ]);
-        return redirect()->route('why.index')->with('seccess', 'stored seccessfully');
+
+        return redirect()->route('why.index')->with('success', 'stored successfully');
     }
 
     /**
@@ -65,9 +68,8 @@ class WhyController extends Controller
     public function show($id)
     {
         $why = DB::table('why')->select()->where('id', $id)->first();
-        $user = User::where('id', Session::get('loginId'))->first();
 
-        return view('dashboard.why.view', compact('why', 'user'));
+        return view('dashboard.why.view', compact('why'));
     }
 
     /**
@@ -75,11 +77,9 @@ class WhyController extends Controller
      */
     public function edit($id)
     {
-
         $why = DB::table('why')->select()->where('id', $id)->first();
-        $user = User::where('id', Session::get('loginId'))->first();
 
-        return view('dashboard.why.edit', compact('why', 'user'));
+        return view('dashboard.why.edit', compact('why'));
     }
 
     /**
@@ -88,10 +88,8 @@ class WhyController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'name' => ['required'],
+            'name' => ['required', 'max:225'],
             'description' => ['required', 'min:5'],
-
-
         ]);
         if ($request->hasFile('image')) {
             $photoDel = DB::table('why')->select('image')->where('id', $id)->get();
@@ -119,6 +117,7 @@ class WhyController extends Controller
     public function destroy($id)
     {
         DB::table('why')->where('id', $id)->delete();
-        return redirect()->route('why.index')->with('seccess', 'deleted seccessfully');
+
+        return redirect()->route('why.index')->with('success', 'deleted successfully');
     }
 }

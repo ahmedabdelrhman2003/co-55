@@ -22,14 +22,16 @@ class StoreLocationRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['required'],
-            'description' => ['required',  'min:10'],
-            'article' => ['required'],
-            'icon_title' => ['required'],
-            'image' => ['image', 'required', 'mimes:jpeg,jpg,png,svg', 'max:1000'],
-            'location_image' => ['required', 'max:1000'],
-            'icon_name' => ['required'],
-            'icon_image' => ['required'],
+            'location_image' => ['required', 'array', 'min:0'],
+            'name' => ['required', 'max:255'],
+            'description' => ['required', 'max:255'],
+            'article' => ['required', 'max:1000'],
+            'icon_title' => ['required', 'array', 'min:0'],
+            'icon_title.*' => ['max:255'],
+            'image' => ['image', 'required', 'mimes:jpeg,jpg,png,svg'],
+            'icon_image.*' => ['mimes:jpeg,jpg,png,svg'],
+            'icon_image' => ['array', 'required', 'min:0'],
+
         ];
     }
 }

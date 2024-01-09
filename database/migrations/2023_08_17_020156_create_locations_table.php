@@ -16,9 +16,11 @@ return new class extends Migration
             $table->string('name');
             $table->string('article');
             $table->string('description');
-            $table->string('link');
             $table->string('image');
+            $table->string('longitude');
+            $table->string('latitude');
             $table->timestamps();
+            $table->enum('activation', ['0', '1'])->default(0);
         });
     }
 

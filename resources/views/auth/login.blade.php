@@ -41,7 +41,7 @@
                                 <div class="auth-logo">
                                     <a href="{{ route('dashboard') }}" class="logo logo-dark text-center">
                                         <span class="logo-lg">
-                                            <img src="{{ url('assets/images/logo (1).png') }}" alt=""
+                                            <img src="{{ url('assets/images/icon.png') }}" alt=""
                                                 height="42">
                                         </span>
                                     </a>
@@ -86,7 +86,11 @@
                                             placeholder="Enter your password">
                                         <div class="input-group-append" data-password="false">
                                             <div class="input-group-text">
-                                                <span class="password-eye font-12"></span>
+                                                <button id="btn" type="button"
+                                                    style="border: none;
+                                                background-color: inherit;">
+                                                    <span class="password-eye font-12"></span>
+                                                </button>
                                             </div>
                                             @error('password')
                                                 <div class="alert alert-danger">{{ $message }}</div>
@@ -134,6 +138,18 @@
 
     <!-- App js -->
     <script src="{{ url('assets/js/app.minjs') }}"></script>
+    <script>
+        const btn = document.getElementById('btn');
+        const pass = document.getElementById('password');
+        btn.addEventListener('click', function() {
+            if (pass.type === 'password') {
+                pass.type = 'text';
+            } else {
+                pass.type = 'password';
+            }
+
+        })
+    </script>
 
 </body>
 

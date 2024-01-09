@@ -1,0 +1,230 @@
+.body {
+    background-image: url(https://co55eg.com/frontend/assets/images/mid-grey-bg.png);
+    padding-bottom: 4rem;
+}
+
+
+@font-face {
+    font-family: 'visbyCF-Bold-500';
+    src: url('fonts/VisbyCF-Bold.otf');
+    font-display: swap;
+    font-weight: 500;
+}
+
+@font-face {
+    font-family: 'visbyCF-Regural-500';
+    src: url('fonts/VisbyCF-Regular.otf');
+    font-display: swap;
+    /* font-weight: 500; */
+
+}
+
+
+.font-VisbyCF-Bold {
+    font-family: visbyCF-Bold-500;
+    /* line-height: 60px; */
+    font-size: 50px;
+
+}
+
+@media (max-width:992px) and (min-width:576px) {
+    .terms {
+        margin-left: 2rem !important;
+    }
+}
+
+.font-VisbyCF-Bold-title {
+    font-family: visbyCF-Bold-500;
+    line-height: 36px;
+    font-size: 30px;
+}
+
+.font-VisbyCF-Regural {
+    font-family: visbyCF-Regural-500;
+    /* line-height: 36px; */
+    font-size: 18.5px;
+}
+
+
+html,
+body {
+    width: 100%;
+    height: 100%;
+    margin: 0px;
+    padding: 0px;
+    overflow-x: hidden;
+    font-family: visbyCF-Regural-500 !important;
+}
+
+.about-nav {
+    padding-right: 0.9rem !important;
+    padding-bottom: inherit !important;
+}
+
+.btn-nav {
+    background-color: #00A4CF !important;
+    border-radius: 0 !important;
+    color: white !important;
+    text-decoration: none !important;
+}
+
+.btn-nav a {
+    color: white !important;
+    /* text-decoration: none !important; */
+    text-decoration: none !important;
+
+}
+
+.btn-nav:hover {
+    background-color: #424B5A !important;
+    border-radius: 0 !important;
+    color: white !important;
+}
+
+.navbar .navbar-nav .nav-link:hover {
+    color: #23A3D1 !important;
+    /* background-color: rgb(46, 42, 36); */
+}
+
+.navbar .navbar-nav .dropdown-menu .dropdown-item:hover {
+    background-color: rgb(41, 41, 41);
+    color: #23A3D1 !important;
+}
+
+.navbar .navbar-nav .dropdown-menu:hover {
+    display: block;
+
+    color: #23A3D1;
+}
+
+#dropdownMenuButton:hover {
+    color: #23A3D1 !important;
+}
+
+.carousel-control-next-icon,
+.carousel-control-prev-icon {
+    background-color: black;
+}
+
+.navbar .navbar-nav .nav-link:hover {
+    color: blue;
+    /* background-color: rgb(46, 42, 36); */
+}
+
+.dropdown:hover>.dropdown-menu {
+    display: block;
+}
+
+.dropdown>.dropdown-toggle:active {
+    /*Without this, clicking will make it sticky*/
+    pointer-events: none;
+    color: #23A3D1;
+}
+
+
+.dropp:hover {
+    background-color: rgb(41, 41, 41);
+    color: blue;
+}
+
+.nav .contianer .collapse .navbar-nav .contianer .btn .namee:hover {
+    color: blue;
+}
+
+.border-small-line {
+    /* border-bottom: #000; */
+    border-bottom-style: solid;
+    border-width: 3px;
+    min-width: 90px !important;
+}
+
+.border-small-dot-new {
+    /* border-bottom: #000; */
+
+    border-bottom-style: solid;
+    border-width: 9px;
+    transform: translateY(-3px);
+    width: 93px !important;
+}
+
+.footer-logo {
+    width: auto;
+    height: max-content;
+    margin-bottom: 2rem;
+    margin-top: 1rem;
+
+}
+
+.footer-s1 {
+    text-transform: capitalize;
+    font-size: 1.37rem;
+    text-decoration: none !important;
+    color: #ffffff !important;
+}
+
+.footer-s1 .a {
+    font-size: 1.125rem !important;
+}
+
+.list-unstyled .li {
+    color: white;
+    padding-bottom: 2rem;
+
+}
+
+.footer-a {
+    color: white;
+    text-decoration: none;
+    padding-bottom: 0.5rem;
+}
+
+.footer-a:hover {
+    text-decoration: none;
+    color: #23A3D1;
+}
+
+.footer-s2 {
+    font-size: 1.125rem !important;
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+}
+
+.icon-p {
+    display: grid;
+    align-items: center;
+}
+
+.footer-s2-link {
+    color: white;
+    text-decoration: none;
+    margin-right: 0.5rem;
+}
+
+.footer-s2-link:hover {
+    text-decoration: none;
+    color: #23A3D1;
+    margin-right: 0.5rem;
+}
+
+.footer-s1-li {
+    display: grid;
+    justify-content: center;
+}
+
+.h-450 {
+    height: 450px;
+}
+
+@media (max-width: 776px) {
+    .h-450 {
+        height: 250px !important;
+    }
+
+}
+
+.background-dark {
+    background-image: url(https://co55eg.com/frontend/assets/images/dark-image.png);
+    background-size: cover;
+    background-blend-mode: darken;
+
+}

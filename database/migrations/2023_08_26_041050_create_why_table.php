@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('description');
             $table->string('image');
             $table->timestamps();
+            $table->enum('activation', ['0', '1'])->default(0);
         });
     }
 

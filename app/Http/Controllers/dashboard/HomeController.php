@@ -3,11 +3,7 @@
 namespace App\Http\Controllers\dashboard;
 
 use App\Http\traits\media;
-
 use Illuminate\Support\Facades\DB;
-use App\Models\User;
-
-use Illuminate\Support\Facades\Session;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
@@ -19,14 +15,21 @@ class HomeController extends Controller
      */
     public function index()
     {
-        if (Session::has('loginId')) {
+        $homes = DB::table('home')->select()->paginate(10);
 
+        return view('dashboard.home.index', compact('homes'));
+    }
+    function filter(Request $request)
+    {
+        $request->validate([
+            'start_date' => ['required', 'date'],
+            'end_date' => ['required', 'date'],
+        ]);
+        $start_date = $request->start_date;
+        $end_date = $request->end_date;
+        $homes = DB::table('home')->select()->whereDate('created_at', '>=', $start_date)->whereDate('created_at', '<=', $end_date)->paginate(10);
 
-            $home = DB::table('home')->select()->get();
-
-            $user = User::where('id', Session::get('loginId'))->first();
-            return view('dashboard.home.index', compact('home', 'user'));
-        }
+        return view('dashboard.home.index', compact('homes'));
     }
 
     /**
@@ -34,14 +37,8 @@ class HomeController extends Controller
      */
     public function create()
     {
-        if (Session::has('loginId')) {
 
-
-            $user = User::where('id', Session::get('loginId'))->first();
-            return view('dashboard.home.create', compact('user'));
-        } else {
-            return redirect()->route('auth.login-user');
-        }
+        return view('dashboard.home.create');
     }
 
     /**
@@ -50,22 +47,17 @@ class HomeController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'title' => ['required'],
-
-            'image' => ['required']
-
+            'title' => ['required', 'max:225'],
+            'image' => ['required', 'mimes:png,jpg,jpeg']
         ]);
-
         $photoName = $this->uploadPhoto($request->image, 'home');
-
         DB::table('home')->insert([
             'title' => $request->title,
-
             'image' => $photoName,
-
-
+            'created_at' => DB::raw('CURRENT_TIMESTAMP'),
         ]);
-        return redirect()->route('dashboard');
+
+        return view('dashboard.home.index', compact('homes'))->with('success', 'edited successfully');
     }
 
     /**
@@ -73,12 +65,9 @@ class HomeController extends Controller
      */
     public function show($id)
     {
-        if (Session::has('loginId')) {
-            $home = DB::table('home')->select()->where('id', $id)->first();
-            $user = User::where('id', Session::get('loginId'))->first();
+        $home = DB::table('home')->select()->where('id', $id)->first();
 
-            return view('dashboard.home.view', compact('home', 'user'));
-        }
+        return view('dashboard.home.view', compact('home'));
     }
 
     /**
@@ -86,12 +75,9 @@ class HomeController extends Controller
      */
     public function edit($id)
     {
-        if (Session::has('loginId')) {
-            $home = DB::table('home')->select()->where('id', $id)->first();
-            $user = User::where('id', Session::get('loginId'))->first();
+        $home = DB::table('home')->select()->where('id', $id)->first();
 
-            return view('dashboard.home.edit', compact('home', 'user'));
-        }
+        return view('dashboard.home.edit', compact('home'));
     }
 
     /**
@@ -102,7 +88,7 @@ class HomeController extends Controller
         $request->validate([
             'title' => ['required'],
         ]);
-        if ($request->hasFile('icon_image')) {
+        if ($request->hasFile('image')) {
             $photoDel = DB::table('home')->select('image')->where('id', $id)->get();
             $del = public_path('assets/img/home/' . $photoDel);
             $this->deletePhoto($del);
@@ -116,7 +102,8 @@ class HomeController extends Controller
                 'title' => $request->title,
             ]);
         }
-        return redirect()->route('home.index')->with('seccess', 'edited seccessfully');
+
+        return redirect()->route('home.index')->with('success', 'edited successfully');
     }
 
     /**
@@ -124,8 +111,8 @@ class HomeController extends Controller
      */
     public function destroy($id)
     {
-
         DB::table('home')->where('id', $id)->delete();
-        return redirect()->route('hone.index')->with('seccess', 'deleted seccessfully');
+
+        return redirect()->route('hone.index')->with('success', 'deleted successfully');
     }
 }

@@ -1,0 +1,115 @@
+.body {
+    background-image: url(https://co55eg.com/frontend/assets/images/mid-grey-bg.png);
+    padding-bottom: 4rem;
+}
+
+
+@font-face {
+    font-family: 'visbyCF-Bold-500';
+    src: url('fonts/VisbyCF-Bold.otf');
+    font-display: swap;
+    font-weight: 500;
+}
+
+.link {
+    color: white !important;
+    text-decoration-line: none;
+}
+
+@font-face {
+    font-family: 'visbyCF-Regural-500';
+    src: url('fonts/VisbyCF-Regular.otf');
+    font-display: swap;
+    /* font-weight: 500; */
+
+}
+
+
+.font-VisbyCF-Bold {
+    font-family: visbyCF-Bold-500;
+    line-height: 60px;
+    font-size: 37px;
+
+}
+
+.font-VisbyCF-Bold-title {
+    font-family: visbyCF-Bold-500;
+    line-height: 36px;
+    font-size: 30px;
+}
+
+.font-VisbyCF-Regural {
+    font-family: visbyCF-Regural-500;
+    /* line-height: 36px; */
+    font-size: 18.5px;
+}
+
+
+html,
+body {
+    width: 100%;
+    height: 100%;
+    margin: 0px;
+    padding: 0px;
+    overflow-x: hidden;
+    font-family: visbyCF-Regural-500 !important;
+}
+
+
+.cairo-prev {
+    left: 0px !important;
+    position: absolute !important;
+}
+
+.cairo-next {
+    right: 0px !important;
+    position: absolute !important;
+}
+
+.cairo-fa {
+    padding-bottom: 1rem;
+}
+
+.fa-p {
+    font-size: 1.25rem;
+}
+
+@media (max-width:992px) and (min-width:576px) {
+    .terms {
+        margin-left: 2rem !important;
+    }
+}
+
+.fa-new {
+    margin-right: 5px;
+}
+
+.cairo-btn {
+    background-color: #00A4CF !important;
+    border-radius: 0 !important;
+    color: white !important;
+}
+
+.cairo-btn:hover {
+    background-color: #424B5A !important;
+    border-radius: 0 !important;
+    color: white !important;
+}
+
+
+
+.border-small-line {
+    /* border-bottom: #000; */
+    border-bottom-style: solid;
+    border-width: 3px;
+    min-width: 90px !important;
+}
+
+.border-small-dot-new {
+    /* border-bottom: #000; */
+
+    border-bottom-style: solid;
+    border-width: 9px;
+    transform: translateY(-3px);
+    width: 93px !important;
+}

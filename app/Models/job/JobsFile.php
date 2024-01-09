@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class JobsFile extends Model
 {
+    public $timestamps = true;
     use HasFactory;
     public function jobs(): BelongsTo
     {

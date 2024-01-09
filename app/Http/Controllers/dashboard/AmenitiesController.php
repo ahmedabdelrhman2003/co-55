@@ -3,11 +3,7 @@
 namespace App\Http\Controllers\dashboard;
 
 use App\Http\traits\media;
-
 use Illuminate\Support\Facades\DB;
-use App\Models\User;
-
-use Illuminate\Support\Facades\Session;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
@@ -19,10 +15,21 @@ class AmenitiesController extends Controller
      */
     public function index()
     {
+        $amenities = DB::table('amenities')->select()->paginate(10);
 
-        $amenities = DB::table('amenities')->select()->get();
-        $user = User::where('id', Session::get('loginId'))->first();
-        return view('dashboard.amenities.index', compact('user', 'amenities'));
+        return view('dashboard.amenities.index', compact('amenities'));
+    }
+    function filter(Request $request)
+    {
+        $request->validate([
+            'start_date' => ['required', 'date'],
+            'end_date' => ['required', 'date'],
+        ]);
+        $start_date = $request->start_date;
+        $end_date = $request->end_date;
+        $amenities = DB::table('amenities')->select()->whereDate('created_at', '>=', $start_date)->whereDate('created_at', '<=', $end_date)->paginate(10);
+
+        return view('dashboard.amenities.index', compact('amenities'));
     }
 
     /**
@@ -31,10 +38,7 @@ class AmenitiesController extends Controller
     public function create()
     {
 
-
-
-        $user = User::where('id', Session::get('loginId'))->first();
-        return view('dashboard.amenities.create', compact('user'));
+        return view('dashboard.amenities.create');
     }
 
     /**
@@ -43,21 +47,17 @@ class AmenitiesController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => ['required'],
-
-            'image' => ['required']
-
+            'name' => ['required', 'max:225'],
+            'image' => ['required', 'mimes:png,jpg,jpeg,svg']
         ]);
         $photoName = $this->uploadPhoto($request->image, 'amenities');
-
         DB::table('amenities')->insert([
             'name' => $request->name,
-
             'image' => $photoName,
-
-
+            'created_at' => DB::raw('CURRENT_TIMESTAMP'),
         ]);
-        return redirect()->route('amenities.index')->with('seccess', 'stored seccessfully');
+
+        return redirect()->route('amenities.index')->with('success', 'stored successfully');
     }
 
     /**
@@ -65,12 +65,9 @@ class AmenitiesController extends Controller
      */
     public function show($id)
     {
-        if (Session::has('loginId')) {
-            $amenities = DB::table('amenities')->select()->where('id', $id)->first();
-            $user = User::where('id', Session::get('loginId'))->first();
+        $amenities = DB::table('amenities')->select()->where('id', $id)->first();
 
-            return view('dashboard.amenities.view', compact('amenities', 'user'));
-        }
+        return view('dashboard.amenities.view', compact('amenities'));
     }
 
     /**
@@ -78,12 +75,9 @@ class AmenitiesController extends Controller
      */
     public function edit($id)
     {
-        if (Session::has('loginId')) {
-            $amenities = DB::table('amenities')->select()->where('id', $id)->first();
-            $user = User::where('id', Session::get('loginId'))->first();
+        $amenities = DB::table('amenities')->select()->where('id', $id)->first();
 
-            return view('dashboard.amenities.edit', compact('amenities', 'user'));
-        }
+        return view('dashboard.amenities.edit', compact('amenities'));
     }
 
     /**
@@ -92,7 +86,7 @@ class AmenitiesController extends Controller
     public function update(Request $request,  $id)
     {
         $request->validate([
-            'name' => ['required'],
+            'name' => ['required', 'max:225'],
         ]);
         if ($request->hasFile('image')) {
             $photoDel = DB::table('amenities')->select('image')->where('id', $id)->get();
@@ -102,9 +96,8 @@ class AmenitiesController extends Controller
         }
         $affected = DB::table('amenities')->where('id', $id)->update([
             'name' => $request->name,
-
         ]);
-        return redirect()->route('amenities.index')->with('seccess', 'edited seccessfully');
+        return redirect()->route('amenities.index')->with('success', 'stored successfully');
     }
 
     /**
@@ -112,8 +105,8 @@ class AmenitiesController extends Controller
      */
     public function destroy($id)
     {
-
         DB::table('amenities')->where('id', $id)->delete();
+
         return redirect()->route('dashboard');
     }
 }

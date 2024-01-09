@@ -2,12 +2,16 @@
 
 namespace App\Http\Controllers\Auth;
 
+use Illuminate\Support\Facades\Auth;
+
 use App\Models\User;
 use App\Http\Requests\Auth\RegisterRequest;
 use App\Http\Requests\Auth\LoginRequest;
 use Illuminate\Support\Facades\Session;
 
 use App\Http\Controllers\Controller;
+use App\Models\Permission;
+use App\Models\Role;
 use Illuminate\Http\Request;
 
 use Illuminate\Support\Facades\Hash;
@@ -31,8 +35,8 @@ class AuthController extends Controller
         if ($user) {
             if (Hash::check($request->password, $user->password)) {
                 $request->Session()->put('loginId', $user->id);
-                $name = $user->name;
-
+                $id = $user->id;
+                Auth::login(User::find($id));
                 return redirect()->route('dashboard');
             } else {
                 return back()->with('error', 'wrong password');
@@ -43,29 +47,56 @@ class AuthController extends Controller
     }
     function admins()
     {
-        if (Session::has('loginId')) {
-            $user = User::where('id', Session::get('loginId'))->first();
-            $users = User::get();
-            return view('auth.admins', compact('user', 'users'));
-        } else
-            return redirect()->route('auth.login');
+
+        $user = User::where('id', Session::get('loginId'))->first();
+        $users = User::with('role')->get();
+        $role = $user->role;
+        return view('auth.admins', compact('user', 'role', 'users'));
     }
     function create()
     {
-        if (Session::has('loginId')) {
-            $user = User::where('id', Session::get('loginId'))->first();
-            return view('auth.create', compact('user'));
-        }
+
+        $user = User::where('id', Session::get('loginId'))->first();
+        $roles = Role::get();
+        return view('auth.create', compact('user', 'roles'));
     }
+
+    function edit($id)
+    {
+        $user = User::where('id', Session::get('loginId'))->first();
+        $admin = User::find($id);
+        $roles = Role::get();
+        return view('auth.edit', compact('user', 'admin', 'roles'));
+    }
+    function update(Request $request, $id)
+    {
+        $request->validate([
+            'name' => ['required', 'max:255'],
+            'email' => ['required', 'email', 'max:255'],
+            'role' => ['required', 'exists:roles,id']
+        ]);
+        $user = User::find($id);
+        $user->name = $request->name;
+        $user->email = $request->email;
+        $user->role_id = $request->role;
+        $user->save();
+        return redirect()->route('auth.admins');
+    }
+
     function register(RegisterRequest $request)
     {
         $user = new User;
 
         $user->name = $request->name;
         $user->email = $request->email;
+        $user->role_id = $request->role;
+
         $user->password = Hash::make($request->password);
-        $data = $user->save();
-        if ($data) {
+        $user->save();
+
+
+
+        if ($user) {
             return redirect()->route('auth.admins')->with('seccess', 'user created');
         } else {
             return back()->with('faild', 'faild to create user');
@@ -73,12 +104,11 @@ class AuthController extends Controller
     }
     function logout()
     {
-        if (Session::has('loginId')) {
 
-            Session::pull('loginId');
 
-            return redirect()->route('auth.login');
-        }
+        Session::pull('loginId');
+        Auth::logout();
+        return redirect()->route('auth.login');
     }
     function destroy($id)
     {
